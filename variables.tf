@@ -15,6 +15,19 @@
  */
 
 variable "dns_zones" {
-  type        = any
+  type = list(object({
+    name = string
+    dnsName = string
+    visibility = string
+    dnsSec = object({
+      state = string
+    })
+    recordSets = list(object({
+      dnsName = string
+      type = string
+      ttl = number
+      values = list(string)
+    }))
+  }))
   description = "Resources as JSON (see README.md). You can read values from a YAML file with yamldecode()."
 }
