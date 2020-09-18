@@ -15,15 +15,10 @@
  */
 
 locals {
-  dnsZones = try(
-    var.dns_zones != null
-    ? var.dns_zones
-    : [],
-    []
-  )
+  dnsZones = var.dns_zones != null ? var.dns_zones : []
 
   dnsZoneRecordSets = flatten([
-    for dnsZone in keys(local.dnsZones) : [
+    for dnsZone in local.dnsZones: [
       for dnsRecordSet in dnsZone.recordSets : merge(dnsRecordSet, {
         dnsZone = dnsZone
       })
