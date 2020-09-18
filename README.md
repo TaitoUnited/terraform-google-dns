@@ -16,7 +16,6 @@ resource "google_project_service" "compute" {
 module "dns" {
   source       = "TaitoUnited/dns/google"
   version      = "1.0.0"
-  providers    = [ google ]
   depends_on   = [ google_project_service.compute ]
   dns_zones    = yamldecode(file("${path.root}/../infra.yaml"))["dnsZones"]
 }
@@ -51,6 +50,7 @@ Combine with the following modules to get a complete infrastructure defined by Y
 - [Databases](https://registry.terraform.io/modules/TaitoUnited/databases/google)
 - [Storage](https://registry.terraform.io/modules/TaitoUnited/storage/google)
 - [Monitoring](https://registry.terraform.io/modules/TaitoUnited/monitoring/google)
+- [Events](https://registry.terraform.io/modules/TaitoUnited/events/google)
 - [PostgreSQL privileges](https://registry.terraform.io/modules/TaitoUnited/privileges/postgresql)
 - [MySQL privileges](https://registry.terraform.io/modules/TaitoUnited/privileges/mysql)
 

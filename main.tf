@@ -15,7 +15,6 @@
  */
 
 locals {
-
   dnsZones = try(
     var.dns_zones != null
     ? var.dns_zones
@@ -30,5 +29,4 @@ locals {
       })
     ]
   ])
-
 }
