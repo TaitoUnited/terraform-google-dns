@@ -20,6 +20,7 @@ locals {
   dnsZoneRecordSets = flatten([
     for dnsZone in local.dnsZones: [
       for dnsRecordSet in dnsZone.recordSets : merge(dnsRecordSet, {
+        key = "${dnsZone.name}-${dnsRecordSet.dnsName}-${dnsRecordSet.type}"
         dnsZone = dnsZone
       })
     ]

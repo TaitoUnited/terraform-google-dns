@@ -15,26 +15,26 @@
  */
 
 resource "google_dns_managed_zone" "dns_zone" {
-  count         = length(local.dnsZones)
+  for_each      = {for item in local.dnsZones: item.name => item}
 
-  name          = local.dnsZones[count.index].name
-  dns_name      = local.dnsZones[count.index].dnsName
-  visibility    = local.dnsZones[count.index].visibility
+  name          = each.value.name
+  dns_name      = each.value.dnsName
+  visibility    = each.value.visibility
 
   dnssec_config {
-    state       = try(local.dnsZones[count.index].dnssec.state, "off")
+    state       = try(each.value.dnssec.state, "off")
   }
 }
 
 resource "google_dns_record_set" "dns_record_set" {
   depends_on    = [google_dns_managed_zone.dns_zone]
-  count         = length(local.dnsZoneRecordSets)
+  for_each      = {for item in local.dnsZoneRecordSets: item.key => item}
 
-  name = local.dnsZoneRecordSets[count.index].dnsName
-  type = local.dnsZoneRecordSets[count.index].type
-  ttl  = local.dnsZoneRecordSets[count.index].ttl
+  name = each.value.dnsName
+  type = each.value.type
+  ttl  = each.value.ttl
 
-  managed_zone  = local.dnsZoneRecordSets[count.index].dnsZone.name
+  managed_zone  = each.value.dnsZone.name
 
-  rrdatas       = local.dnsZoneRecordSets[count.index].values
+  rrdatas       = each.value.values
 }
