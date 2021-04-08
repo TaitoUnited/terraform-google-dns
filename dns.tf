@@ -22,7 +22,7 @@ resource "google_dns_managed_zone" "dns_zone" {
   visibility    = each.value.visibility
 
   dnssec_config {
-    state       = try(each.value.dnssec.state, "off")
+    state       = coalesce(each.value.dnssec.state, "off")
   }
 }
 
